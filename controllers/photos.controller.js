@@ -63,10 +63,10 @@ exports.vote = async (req, res) => {
 
   try {
     const photoToUpdate = await Photo.findOne({ _id: req.params.id });
-
+    
     if (!photoToUpdate) res.status(404).json({ message: "Not found" });
     else {
-      const voter = await Voter({ user: req.clientIp });
+      const voter = await Voter.findOne({ user: req.clientIp });
       if (!voter) {
         const newVoter = new Voter({ user: req.clientIp, votes: photoToUpdate._id });
         await newVoter.save();
